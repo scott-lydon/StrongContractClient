@@ -1,0 +1,15 @@
+{
+  "originHash" : "371f6bdaea2148b1391bf11b63bf8b2040fe58212cea556c925c35c5a82a0b9e",
+  "pins" : [
+    {
+      "identity" : "callable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ElevatedUnderdogs/Callable.git",
+      "state" : {
+        "revision" : "92ee233f6a65f2e96fddf7e894577c28e00ddda5",
+        "version" : "1.4.0"
+      }
+    }
+  ],
+  "version" : 3
+}
