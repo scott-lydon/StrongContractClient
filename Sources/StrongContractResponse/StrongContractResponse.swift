@@ -10,11 +10,11 @@ public var defaultContentType: String = ""
 
 public struct Request<Payload: Codable, Response: Codable> {
 
-    var path: String
-    var method: HTTPMethod
-    var baseComponents: URLComponents = defaultComponents
-    var initialPath: String = defaultPath
-    var contentType: String = defaultContentType
+    public var path: String
+    public var method: HTTPMethod
+    public var baseComponents: URLComponents = defaultComponents
+    public var initialPath: String = defaultPath
+    public var contentType: String = defaultContentType
 
     init(
         path: String,
