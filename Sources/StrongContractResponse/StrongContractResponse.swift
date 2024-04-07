@@ -16,7 +16,7 @@ public struct Request<Payload: Codable, Response: Codable> {
     public var initialPath: String = defaultPath
     public var contentType: String = defaultContentType
 
-    init(
+    public init(
         path: String,
         method: HTTPMethod,
         baseComponents: URLComponents = defaultComponents,
