@@ -5,7 +5,9 @@
 //  Created by Scott Lydon on 4/7/24.
 //
 
+#if canImport(Vapor)
 import Vapor
+
 
 public extension StrongContractClient.Request {
 
@@ -56,3 +58,4 @@ public extension StrongContractClient.Request {
         }
     }
 }
+#endif

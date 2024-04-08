@@ -6,8 +6,11 @@
 //
 
 import Foundation
+#if canImport(NIO)
 import NIO
+
 
 extension ByteBuffer {
     var data: Data { .init(buffer: self) }
 }
+#endif

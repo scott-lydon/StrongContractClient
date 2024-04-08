@@ -6,7 +6,9 @@
 //
 
 import EncryptDecryptKey
+#if canImport(Vapor)
 import Vapor
+
 
 extension Vapor.Request {
     func decryptedData() throws -> Data {
@@ -16,3 +18,4 @@ extension Vapor.Request {
         return try encryptedData.decrypt()
     }
 }
+#endif
