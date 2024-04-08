@@ -11,6 +11,7 @@ public extension URLQueryItem {
     static var access_token_and_user_id = URLQueryItem(name: "access_token", value: "")
 }
 
+/// Needs an extension for Codable.
 extension URLQueryItem: Codable {
     enum CodingKeys: String, CodingKey {
         case name

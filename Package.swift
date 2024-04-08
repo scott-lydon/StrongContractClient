@@ -1,6 +1,6 @@
 // swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version:5.10
 import PackageDescription
 
 let package = Package(
@@ -10,24 +10,25 @@ let package = Package(
        .macOS(.v10_15), // Add other platforms as needed, for example, macOS
     ],
     products: [
-        // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "StrongContractClient",
             targets: ["StrongContractClient"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // Include the Callable library from its GitHub repository
+        // Make sure to include all your dependencies here.
         .package(url: "https://github.com/ElevatedUnderdogs/Callable.git", .upToNextMajor(from: "1.0.0")),
+        // Adding Vapor as a dependency
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
+        .package(url: "https://github.com/scott-lydon/EncryptDecryptKey.git", from: "1.0.0"),
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "StrongContractClient",
             dependencies: [
-                // Specify the dependencies of this target.
-                .product(name: "Callable", package: "Callable"), // Adjust based on the actual product name in the Callable package
+                .product(name: "Callable", package: "Callable"),
+                // Conditional dependency on Vapor for the macOS platform only
+                .product(name: "Vapor", package: "vapor", condition: .when(platforms: [.macOS])),
+                "EncryptDecryptKey"
             ]),
         .testTarget(
             name: "StrongContractClientTests",
