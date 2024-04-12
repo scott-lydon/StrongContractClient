@@ -30,7 +30,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         self.contentType = contentType
     }
 
-    typealias PassResponse = (Response?) -> Void
+    public typealias PassResponse = (Response?) -> Void
 
     /// This is made to be a force unwrap so that the user of this framework may write unit tests.
     internal var urlRequest: URLRequest! {
@@ -60,7 +60,8 @@ public struct Request<Payload: Codable, Response: Codable> {
     ///   - payload: The payload you want to pass to the backend.
     ///   - passResponse: Exposes the response from the backend.
     ///   - errorHandler: Exposes any errors.
-    @discardableResult func task(
+    @discardableResult
+    public func task(
         expressive: Bool = false,
         payload: Payload,
         passResponse: @escaping PassResponse,
