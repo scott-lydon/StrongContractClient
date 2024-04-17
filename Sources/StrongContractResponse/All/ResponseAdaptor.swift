@@ -17,7 +17,7 @@ public extension StrongContractClient.Request {
         var data: ByteBuffer  // Holds the encoded data
 
         // Initializer that throws an error if the body cannot be encoded
-        init(
+        public init(
             status: HTTPResponseStatus,
             version: HTTPVersion,
             headers: HTTPHeaders,
