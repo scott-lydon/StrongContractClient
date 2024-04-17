@@ -34,23 +34,21 @@ public struct Request<Payload: Codable, Response: Codable> {
 
     /// This is made to be a force unwrap so that the user of this framework may write unit tests.
     internal var urlRequest: URLRequest! {
-        get {
-            // Combine the base components with the initial and specific path
-            var components = baseComponents
-            let fullPath = "\(initialPath)\(path)"
-            components.path = fullPath
+        // Combine the base components with the initial and specific path
+        var components = baseComponents
+        let fullPath = "\(initialPath)\(path)"
+        components.path = fullPath
 
-            // Ensure the URL is valid
-            guard let url = components.url else { return nil }
+        // Ensure the URL is valid
+        guard let url = components.url else { return nil }
 
-            // Create the URLRequest and set its properties
-            var request = URLRequest(url: url)
-            request.httpMethod = method.rawValue
-            request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+        // Create the URLRequest and set its properties
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.addValue(contentType, forHTTPHeaderField: "Content-Type")
 
-            // Return the configured request
-            return request
-        }
+        // Return the configured request
+        return request
     }
 
     /// This is the client side half of the strong contract between the client and the api
@@ -70,7 +68,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         // These might be better as properties.
         var buffer = urlRequest
 
-        let codable: TokenAndPayload<Payload> = .init(payload: payload)
+        let codable: AccessTokenAndPayload<Payload> = .init(payload: payload)
         do {
             let encoder = JSONEncoder()
             buffer?.httpBody = try encoder.encode(codable)

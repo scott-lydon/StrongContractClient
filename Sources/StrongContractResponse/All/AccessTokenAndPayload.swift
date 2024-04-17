@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct TokenAndPayload<Payload: Codable>: Codable {
+public struct AccessTokenAndPayload<Payload: Codable>: Codable {
     var accessToken: URLQueryItem = .access_token_and_user_id
     var payload: Payload
 }
