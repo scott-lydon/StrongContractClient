@@ -9,7 +9,6 @@ import EncryptDecryptKey
 #if canImport(Vapor)
 import Vapor
 
-
 extension Vapor.Request {
     func decryptedData() throws -> Data {
         guard let encryptedData = body.data?.data else {
