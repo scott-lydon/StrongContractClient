@@ -9,24 +9,24 @@ import Foundation
 
 extension URLComponents {
     func urlAndValidate() throws -> URL {
-        guard let scheme = self.scheme else {
+        guard let _ = scheme else {
             throw URLValidationError.missingScheme
         }
 
-        guard let host = self.host else {
+        guard let _ = host else {
             throw URLValidationError.missingHost
         }
 
-        guard !self.path.isEmpty else {
+        guard !path.isEmpty else {
             throw URLValidationError.missingPath
         }
 
-        guard self.path.hasPrefix("/") else {
+        guard path.hasPrefix("/") else {
             throw URLValidationError.invalidPath
         }
         
         // If all validations pass but url is still nil, it indicates an unknown problem.
-        guard let url = self.url else {
+        guard let url else {
             throw URLValidationError.unknown
         }
 

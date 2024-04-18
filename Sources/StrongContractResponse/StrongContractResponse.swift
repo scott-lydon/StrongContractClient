@@ -10,7 +10,7 @@ public var defaultContentType: String = ""
 
 public struct Request<Payload: Codable, Response: Codable> {
 
-    public var path: String
+    public var path: String = "/"
     public var method: HTTPMethod
     public var baseComponents: URLComponents = defaultComponents
     public var initialPath: String = defaultPath
@@ -39,7 +39,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         let fullPath = "/\(initialPath)/\(path)"
             .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         // Ensures no leading double slashes
-        components.path = fullPath
+        components.path = "/" + fullPath
 
         // Attempt to validate the URL and create the URLRequest
 
