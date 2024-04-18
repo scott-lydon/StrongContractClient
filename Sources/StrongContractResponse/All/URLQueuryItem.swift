@@ -9,6 +9,15 @@ import Foundation
 
 public extension URLQueryItem {
     static var access_token_and_user_id = URLQueryItem(name: "access_token", value: "")
+
+
+    static func set(token: Int) {
+        access_token_and_user_id = URLQueryItem(name: "access_token", value: "\(token)")
+    }
+
+    static func assertHasToken() {
+        assert(access_token_and_user_id.value != "" && access_token_and_user_id.value != nil)
+    }
 }
 
 /// Needs an extension for Codable.
