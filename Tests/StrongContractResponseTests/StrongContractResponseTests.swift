@@ -106,7 +106,6 @@ class RequestTests2: XCTestCase {
                 }
             }
         )
-
         waitForExpectations(timeout: 1)
     }
 

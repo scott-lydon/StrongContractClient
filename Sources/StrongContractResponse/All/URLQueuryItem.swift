@@ -12,7 +12,7 @@ public extension URLQueryItem {
 
 
     static func set(token: Int) {
-        Self.access_token_and_user_id = URLQueryItem(name: "access_token", value: "\(token)")
+        access_token_and_user_id = URLQueryItem(name: "access_token", value: "\(token)")
     }
 
     static func assertHasToken() {
