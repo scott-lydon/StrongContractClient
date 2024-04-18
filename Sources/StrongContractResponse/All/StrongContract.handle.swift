@@ -7,6 +7,7 @@
 
 #if canImport(Vapor)
 import Vapor
+import CommonExtensions
 
 public extension StrongContractClient.Request {
 
@@ -43,6 +44,19 @@ public extension StrongContractClient.Request {
                 } catch {
                     print(error.localizedDescription)
                 }
+                let payload1: Payload? = $0.body.data?.data.codable()
+                let payload2: Payload? = $0.body.data?.data.traditionalCodable()
+                let payload3: AccessTokenAndPayload<Payload>? = $0.body.data?.data.codable()
+                let payload4: AccessTokenAndPayload<Payload>? = $0.body.data?.data.traditionalCodable()
+
+                print(
+                    payload1 as Any,
+                    payload2 as Any,
+                    payload3 as Any,
+                    payload4 as Any
+                )
+
+
                 let payload: AccessTokenAndPayload<Payload> = try $0.decryptedData().decodedObject()
                 return try payloadToResponse(payload, $0).vaporResponse
             }

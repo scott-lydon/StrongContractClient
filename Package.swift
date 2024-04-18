@@ -15,11 +15,12 @@ let package = Package(
             targets: ["StrongContractClient"]),
     ],
     dependencies: [
-        // Make sure to include all your dependencies here.
+        // Existing dependencies
         .package(url: "https://github.com/ElevatedUnderdogs/Callable.git", .upToNextMajor(from: "1.0.0")),
-        // Adding Vapor as a dependency
         .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
         .package(url: "https://github.com/scott-lydon/EncryptDecryptKey.git", from: "1.0.0"),
+        // New dependency for CommonExtensions
+        .package(url: "https://github.com/ElevatedUnderdogs/CommonExtensions.git", .upToNextMajor(from: "1.0.0"))
     ],
     targets: [
         .target(
@@ -28,7 +29,9 @@ let package = Package(
                 .product(name: "Callable", package: "Callable"),
                 // Conditional dependency on Vapor for the macOS platform only
                 .product(name: "Vapor", package: "vapor", condition: .when(platforms: [.macOS])),
-                "EncryptDecryptKey"
+                "EncryptDecryptKey",
+                // Adding CommonExtensions to the target dependencies
+                .product(name: "CommonExtensions", package: "CommonExtensions")
             ]),
         .testTarget(
             name: "StrongContractClientTests",
