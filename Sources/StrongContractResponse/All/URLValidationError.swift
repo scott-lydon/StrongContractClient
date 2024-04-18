@@ -8,24 +8,24 @@
 import Foundation
 
 enum URLValidationError: Error, LocalizedError {
-    case missingScheme
-    case missingHost
-    case missingPath
-    case invalidPath
-    case unknown
+    case missingScheme(String)
+    case missingHost(String)
+    case missingPath(String)
+    case invalidPath(String)
+    case unknown(String)
 
     var errorDescription: String? {
         switch self {
-        case .missingScheme:
-            return "Scheme component is missing."
-        case .missingHost:
-            return "Host component is missing."
-        case .missingPath:
-            return "Path component is missing."
-        case .invalidPath:
-            return "Path component is invalid. It must start with '/'."
-        case .unknown:
-            return "Unknown error. The URL could not be constructed."
+        case .missingScheme(let details):
+            return "Scheme component is missing. \(details)"
+        case .missingHost(let details):
+            return "Host component is missing. \(details)"
+        case .missingPath(let details):
+            return "Path component is missing. \(details)"
+        case .invalidPath(let details):
+            return "Path component is invalid. It must start with '/'. \(details)"
+        case .unknown(let details):
+            return "Unknown error. The URL could not be constructed. \(details)"
         }
     }
 }
