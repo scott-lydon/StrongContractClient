@@ -36,8 +36,7 @@ public struct Request<Payload: Codable, Response: Codable> {
     public func urlRequest(payload: Payload?) throws -> URLRequest {
         // Combine the base components with the initial and specific path
         var components = baseComponents
-        let fullPath = "/\(initialPath)/\(path)"
-            .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        let fullPath = "/\(initialPath)/\(path)".replacingOccurrences(of: "//", with: "/")
         // Ensures no leading double slashes
         components.path = fullPath
 
