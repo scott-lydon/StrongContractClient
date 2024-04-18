@@ -36,19 +36,23 @@ public struct Request<Payload: Codable, Response: Codable> {
     internal var urlRequest: URLRequest! {
         // Combine the base components with the initial and specific path
         var components = baseComponents
-        let fullPath = "\(initialPath)\(path)"
+        let fullPath = "/\(initialPath)\(path)"
         components.path = fullPath
 
         // Ensure the URL is valid
-        guard let url = components.url else { return nil }
+        do {
+            let url = try components.urlAndValidate()
+            // Create the URLRequest and set its properties
+            var request = URLRequest(url: url)
+            request.httpMethod = method.rawValue
+            request.addValue(contentType, forHTTPHeaderField: "Content-Type")
 
-        // Create the URLRequest and set its properties
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.addValue(contentType, forHTTPHeaderField: "Content-Type")
-
-        // Return the configured request
-        return request
+            // Return the configured request
+            return request
+        } catch {
+            print(error.localizedDescription)
+            return nil
+        }
     }
 
     /// This is the client side half of the strong contract between the client and the api
