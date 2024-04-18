@@ -12,9 +12,9 @@ public extension StrongContractClient.Request {
 
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
-    func handle(
+    func registerHandler(
         app: any RoutesBuilder,
-        payloadToResponse: @escaping (Payload, Vapor.Request) throws -> ResponseAdaptor
+        payloadToResponse: @escaping (AccessTokenAndPayload<Payload>, Vapor.Request) throws -> ResponseAdaptor
     ) {
         // Split the path by '/' to get individual components
         let pathSegments = path.split(separator: "/").map(String.init)
@@ -33,16 +33,17 @@ public extension StrongContractClient.Request {
             app.post(pathComponents) { 
                 do {
                     let payload: AccessTokenAndPayload<Payload> = try $0.decryptedData().decodedObject()
+                    return try payloadToResponse(payload, $0).vaporResponse
                 } catch {
                     print(error.localizedDescription)
                 }
                 do {
                     let payload: Payload = try $0.decryptedData().decodedObject()
-                    return try payloadToResponse(payload, $0).vaporResponse
+                 //  return try payloadToResponse(payload, $0).vaporResponse
                 } catch {
                     print(error.localizedDescription)
                 }
-                let payload: Payload = try $0.decryptedData().decodedObject()
+                let payload: AccessTokenAndPayload<Payload> = try $0.decryptedData().decodedObject()
                 return try payloadToResponse(payload, $0).vaporResponse
             }
         case .put:
