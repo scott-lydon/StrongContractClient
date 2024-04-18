@@ -33,7 +33,7 @@ public struct Request<Payload: Codable, Response: Codable> {
     public typealias PassResponse = (Response?) -> Void
 
     /// This is made to be a force unwrap so that the user of this framework may write unit tests.
-    internal func urlRequest(payload: Payload?) throws -> URLRequest {
+    public func urlRequest(payload: Payload?) throws -> URLRequest {
         // Combine the base components with the initial and specific path
         var components = baseComponents
         let fullPath = "/\(initialPath)/\(path)"
