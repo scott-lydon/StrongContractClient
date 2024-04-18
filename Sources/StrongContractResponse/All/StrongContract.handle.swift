@@ -31,7 +31,19 @@ public extension StrongContractClient.Request {
             }
         case .post:
             app.post(pathComponents) { 
-                try payloadToResponse($0.decryptedData().decodedObject(), $0).vaporResponse
+                do {
+                    let payload: AccessTokenAndPayload<Payload> = try $0.decryptedData().decodedObject()
+                } catch {
+                    print(error.localizedDescription)
+                }
+                do {
+                    let payload: Payload = try $0.decryptedData().decodedObject()
+                    return try payloadToResponse(payload, $0).vaporResponse
+                } catch {
+                    print(error.localizedDescription)
+                }
+                let payload: Payload = try $0.decryptedData().decodedObject()
+                return try payloadToResponse(payload, $0).vaporResponse
             }
         case .put:
             app.put(pathComponents) {
