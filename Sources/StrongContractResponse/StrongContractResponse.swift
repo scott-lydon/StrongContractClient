@@ -33,27 +33,25 @@ public struct Request<Payload: Codable, Response: Codable> {
     public typealias PassResponse = (Response?) -> Void
 
     /// This is made to be a force unwrap so that the user of this framework may write unit tests.
-    internal var urlRequest: URLRequest! {
+    internal func urlRequest() throws -> URLRequest {
         // Combine the base components with the initial and specific path
         var components = baseComponents
-        let fullPath = "/\(initialPath)\(path)"
+        let fullPath = "/\(initialPath)/\(path)"
+            .trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+        // Ensures no leading double slashes
         components.path = fullPath
 
-        // Ensure the URL is valid
-        do {
-            let url = try components.urlAndValidate()
-            // Create the URLRequest and set its properties
-            var request = URLRequest(url: url)
-            request.httpMethod = method.rawValue
-            request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+        // Attempt to validate the URL and create the URLRequest
 
-            // Return the configured request
-            return request
-        } catch {
-            print(error.localizedDescription)
-            return nil
-        }
+        let url = try components.urlAndValidate()
+        // Create the URLRequest and set its properties
+        var request = URLRequest(url: url)
+        request.httpMethod = method.rawValue
+        request.addValue(contentType, forHTTPHeaderField: "Content-Type")
+        // ... Set other properties on the request as needed ...
+        return request
     }
+
 
     /// This is the client side half of the strong contract between the client and the api
     /// You can call this task and trust that the
@@ -68,20 +66,20 @@ public struct Request<Payload: Codable, Response: Codable> {
         payload: Payload,
         passResponse: @escaping PassResponse,
         errorHandler: ErrorHandler? = nil
-    ) -> URLRequest? {
+    ) throws -> URLRequest? {
         // These might be better as properties.
-        var buffer = urlRequest
+        var buffer: URLRequest = try! urlRequest()
 
         let codable: AccessTokenAndPayload<Payload> = .init(payload: payload)
         do {
             let encoder = JSONEncoder()
-            buffer?.httpBody = try encoder.encode(codable)
+            buffer.httpBody = try encoder.encode(codable)
         } catch {
             errorHandler?(error)
             return nil
         }
         // The error may be from codable.
-        buffer?.callCodableError(
+        buffer.callCodableError(
             expressive: expressive,
             action: passResponse,
             errorHandler: errorHandler
