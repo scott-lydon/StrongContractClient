@@ -12,7 +12,7 @@ public extension StrongContractClient.Request {
 
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
-    func handle(
+    func registerHandler(
         app: any RoutesBuilder,
         payloadToResponse: @escaping (AccessTokenAndPayload<Payload>, Vapor.Request) throws -> ResponseAdaptor
     ) {
