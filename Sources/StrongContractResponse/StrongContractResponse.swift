@@ -33,7 +33,7 @@ public struct Request<Payload: Codable, Response: Codable> {
     public typealias PassResponse = (Response?) -> Void
 
     /// This is made to be a force unwrap so that the user of this framework may write unit tests.
-    internal func urlRequest() throws -> URLRequest {
+    public func urlRequest(payload: Payload?) throws -> URLRequest {
         // Combine the base components with the initial and specific path
         var components = baseComponents
         let fullPath = "/\(initialPath)/\(path)"
@@ -49,9 +49,12 @@ public struct Request<Payload: Codable, Response: Codable> {
         request.httpMethod = method.rawValue
         request.addValue(contentType, forHTTPHeaderField: "Content-Type")
         // ... Set other properties on the request as needed ...
+        if let payload {
+            let codable: AccessTokenAndPayload<Payload> = .init(payload: payload)
+            request.httpBody = try JSONEncoder().encode(codable)
+        }
         return request
     }
-
 
     /// This is the client side half of the strong contract between the client and the api
     /// You can call this task and trust that the
@@ -60,30 +63,16 @@ public struct Request<Payload: Codable, Response: Codable> {
     ///   - payload: The payload you want to pass to the backend.
     ///   - passResponse: Exposes the response from the backend.
     ///   - errorHandler: Exposes any errors.
-    @discardableResult
     public func task(
         expressive: Bool = false,
         payload: Payload,
         passResponse: @escaping PassResponse,
         errorHandler: ErrorHandler? = nil
-    ) throws -> URLRequest? {
-        // These might be better as properties.
-        var buffer: URLRequest = try! urlRequest()
-
-        let codable: AccessTokenAndPayload<Payload> = .init(payload: payload)
-        do {
-            let encoder = JSONEncoder()
-            buffer.httpBody = try encoder.encode(codable)
-        } catch {
-            errorHandler?(error)
-            return nil
-        }
-        // The error may be from codable.
-        buffer.callCodableError(
+    ) throws {
+        try urlRequest(payload: payload).callCodableError(
             expressive: expressive,
             action: passResponse,
             errorHandler: errorHandler
         )
-        return buffer
     }
 }
