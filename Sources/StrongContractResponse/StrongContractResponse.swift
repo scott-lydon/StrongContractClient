@@ -64,11 +64,15 @@ public struct Request<Payload: Codable, Response: Codable> {
     ///   - errorHandler: Exposes any errors.
     public func task(
         expressive: Bool = false,
+        assertHasAccessToken: Bool = true,
         payload: Payload,
         passResponse: @escaping PassResponse,
         errorHandler: ErrorHandler? = nil
     ) throws {
-        try urlRequest(payload: payload).callCodableError(
+        if assertHasAccessToken {
+            URLQueryItem.assertHasToken()
+        }
+        return try urlRequest(payload: payload).callCodableError(
             expressive: expressive,
             action: passResponse,
             errorHandler: errorHandler
