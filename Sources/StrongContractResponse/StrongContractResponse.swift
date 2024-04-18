@@ -66,18 +66,14 @@ public struct Request<Payload: Codable, Response: Codable> {
         payload: Payload,
         passResponse: @escaping PassResponse,
         errorHandler: ErrorHandler? = nil
-    ) throws -> URLRequest? {
+    ) throws -> URLRequest {
         // These might be better as properties.
-        var buffer: URLRequest = try! urlRequest()
+        var buffer: URLRequest = try urlRequest()
 
         let codable: AccessTokenAndPayload<Payload> = .init(payload: payload)
-        do {
-            let encoder = JSONEncoder()
-            buffer.httpBody = try encoder.encode(codable)
-        } catch {
-            errorHandler?(error)
-            return nil
-        }
+        let encoder = JSONEncoder()
+        buffer.httpBody = try encoder.encode(codable)
+
         // The error may be from codable.
         buffer.callCodableError(
             expressive: expressive,
