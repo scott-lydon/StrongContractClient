@@ -16,7 +16,14 @@ public extension StrongContractClient.Request {
         app: any RoutesBuilder,
         payloadToResponse: @escaping (Payload, Vapor.Request) throws -> ResponseAdaptor
     ) {
-        let pathComponents: [PathComponent] = ["\(initialPath)", "/", "\(path)"]
+        // Split the path by '/' to get individual components
+        let pathSegments = path.split(separator: "/").map(String.init)
+
+        // Convert string path segments to PathComponent
+        let partialPathComponents = pathSegments.map { PathComponent(stringLiteral: $0) }
+
+        // Prepend initialPath if it's not empty to the path components
+        let pathComponents: [PathComponent] = initialPath.isEmpty ? partialPathComponents : [PathComponent(stringLiteral: initialPath)] + partialPathComponents
         switch method {
         case .get:
             app.get(pathComponents) {
