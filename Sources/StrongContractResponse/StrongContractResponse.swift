@@ -61,21 +61,25 @@ public struct Request<Payload: Codable, Response: Codable> {
     ///   - expressive: Prints any errors.
     ///   - payload: The payload you want to pass to the backend.
     ///   - passResponse: Exposes the response from the backend.
-    ///   - errorHandler: Exposes any errors.
+    ///   - errorHandler: Exposes any errors, including non async errors.  Errors can come from failed url validation of urlComponents, failing to encode the payload into the request body, and any errors produced when creating a session and making a datatask on the URLRequest.
     public func task(
         expressive: Bool = false,
         assertHasAccessToken: Bool = true,
         payload: Payload,
         passResponse: @escaping PassResponse,
         errorHandler: ErrorHandler? = nil
-    ) throws {
+    ) {
         if assertHasAccessToken {
             URLQueryItem.assertHasToken()
         }
-        return try urlRequest(payload: payload).callCodableError(
-            expressive: expressive,
-            action: passResponse,
-            errorHandler: errorHandler
-        )
+        do {
+            try urlRequest(payload: payload).callCodableError(
+                expressive: expressive,
+                action: passResponse,
+                errorHandler: errorHandler
+            )
+        } catch {
+            errorHandler?(error)
+        }
     }
 }
