@@ -1,5 +1,5 @@
 {
-  "originHash" : "54965ecf259de43d3de82f267dbef5faac7b53db26ebe334dabf29d09d1ab203",
+  "originHash" : "175fb0423b06bdce3aa1a80dc90ff9dd38619d22d7636890e21697b878c5538e",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ElevatedUnderdogs/CommonExtensions.git",
       "state" : {
-        "revision" : "ab9907b74a6b0748dcd8934397b0da1b23456c08",
-        "version" : "5.0.1"
+        "revision" : "bfca4d77370ee47851b363e0b478e6182bdee8d8",
+        "version" : "4.0.5"
       }
     },
     {
