@@ -11,6 +11,6 @@ import NIO
 
 
 extension ByteBuffer {
-    var data: Data { .init(buffer: self) }
+    public var data: Data { .init(buffer: self) }
 }
 #endif

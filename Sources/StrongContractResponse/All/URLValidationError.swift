@@ -14,7 +14,7 @@ enum URLValidationError: Error, LocalizedError {
     case invalidPath(String)
     case unknown(String)
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .missingScheme(let details):
             return "Scheme component is missing. \(details)"
