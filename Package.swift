@@ -20,7 +20,7 @@ let package = Package(
         .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
         .package(url: "https://github.com/scott-lydon/EncryptDecryptKey.git", from: "1.0.0"),
         // New dependency for CommonExtensions
-        .package(url: "https://github.com/ElevatedUnderdogs/CommonExtensions.git", .upToNextMajor(from: "1.0.0"))
+        .package(url: "https://github.com/ElevatedUnderdogs/CommonExtensions.git", .upToNextMajor(from: "5.0.0"))
     ],
     targets: [
         .target(
