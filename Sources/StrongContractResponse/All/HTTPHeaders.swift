@@ -5,7 +5,7 @@
 //  Created by Scott Lydon on 4/18/24.
 //
 
-import NIO
+#if canImport(NIO)
 import NIOHTTP1
 
 extension HTTPHeaders {
@@ -15,3 +15,4 @@ extension HTTPHeaders {
         return headers
     }
 }
+#endif
