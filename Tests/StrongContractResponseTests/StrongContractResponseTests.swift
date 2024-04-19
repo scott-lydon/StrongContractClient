@@ -21,7 +21,7 @@ class RequestTests: XCTestCase {
     }
 
     func testURLRequestInitializationFailsWithInvalidURLComponents() {
-        var components = URLComponents()
+        public var components = URLComponents()
         components.scheme = "https" // A valid scheme
         components.host = "127.0.0.1" // A valid host
         components.port = 80 // A valid port

@@ -11,10 +11,10 @@ import Vapor
 public extension StrongContractClient.Request {
 
     struct ResponseAdaptor {
-        var status: HTTPResponseStatus
-        var version: HTTPVersion
-        var headers: HTTPHeaders
-        var data: ByteBuffer  // Holds the encoded data
+        public var status: HTTPResponseStatus
+        public var version: HTTPVersion
+        public var headers: HTTPHeaders
+        public var data: ByteBuffer  // Holds the encoded data
 
         // Initializer that throws an error if the body cannot be encoded
         public init(
@@ -33,7 +33,7 @@ public extension StrongContractClient.Request {
         }
 
         // Computed property to generate a Vapor.Response from the adaptor
-        var vaporResponse: Vapor.Response {
+        public var vaporResponse: Vapor.Response {
             // Create a Vapor.Response with the stored data
             let response = Vapor.Response(
                 status: status,

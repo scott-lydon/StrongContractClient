@@ -8,6 +8,6 @@
 import Foundation
 
 public struct AccessTokenAndPayload<Payload: Codable>: Codable {
-    var accessToken: URLQueryItem = .access_token_and_user_id
-    var payload: Payload
+    public var accessToken: URLQueryItem = .access_token_and_user_id
+    public var payload: Payload
 }
