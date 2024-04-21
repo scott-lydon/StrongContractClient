@@ -18,9 +18,9 @@ public extension StrongContractClient.Request {
 
         // Initializer that throws an error if the body cannot be encoded
         public init(
-            status: HTTPResponseStatus,
-            version: HTTPVersion,
-            headers: HTTPHeaders,
+            status: HTTPResponseStatus = .ok,
+            version: HTTPVersion = .http1_1,
+            headers: HTTPHeaders = .defaultJson,
             body: Response
         ) throws {
             self.status = status
