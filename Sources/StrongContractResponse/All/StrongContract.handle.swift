@@ -15,7 +15,7 @@ public extension StrongContractClient.Request {
     ///  the call site to process the request and return a response
     func registerHandler(
         app: any RoutesBuilder,
-        payloadToResponse: @escaping (AccessTokenAndPayload<Payload>?, Vapor.Request) throws -> ResponseAdaptor
+        payloadToResponse: @escaping (AccessTokenAndPayload<Payload>?, Vapor.Request) async throws -> ResponseAdaptor
     ) {
         // Split the path by '/' to get individual components
         let pathSegments = path.split(separator: "/").map(String.init)
