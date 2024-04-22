@@ -14,7 +14,7 @@ public extension StrongContractClient.Request {
     ///  the call site to process the request and return a response
     func handle(
         app: any RoutesBuilder,
-        payloadToResponse: @escaping (Payload, Vapor.Request) throws -> ResponseAdaptor
+        payloadToResponse: @escaping (Payload, Vapor.Request) async throws -> ResponseAdaptor
     ) {
         let pathComponents: [PathComponent] = ["\(initialPath)", "/", "\(path)"]
         switch method {
