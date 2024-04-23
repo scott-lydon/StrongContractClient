@@ -5,9 +5,10 @@
 //  Created by Scott Lydon on 4/7/24.
 //
 
-import EncryptDecryptKey
 #if canImport(Vapor)
+import EncryptDecryptKey
 import Vapor
+import Callable
 
 extension Vapor.Request {
     func decryptedData() throws -> Data {
@@ -15,6 +16,11 @@ extension Vapor.Request {
             throw Abort(.badRequest, reason: "body data not found")
         }
         return try encryptedData.decrypt()
+    }
+
+    func codableBody<T: Codable>() throws -> T {
+        guard let bodyData = body.data else { throw GenericError(text: "Body data was nil") }
+        return try JSONDecoder().decode(T.self, from: bodyData.data)
     }
 }
 #endif
