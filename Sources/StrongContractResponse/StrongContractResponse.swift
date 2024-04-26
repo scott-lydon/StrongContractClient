@@ -82,4 +82,33 @@ public struct Request<Payload: Codable, Response: Codable> {
             errorHandler?(error)
         }
     }
+
+    /// This is the client side half of the strong contract between the client and the api
+    /// You can call this task and trust that the
+    /// - Parameters:
+    ///   - expressive: Prints any errors.
+    ///   - payload: The payload you want to pass to the backend.
+    ///   - passResponse: Exposes the response from the backend.
+    ///   - errorHandler: Exposes any errors, including non async errors.  Errors can come from failed url validation of urlComponents, failing to encode the payload into the request body, and any errors produced when creating a session and making a datatask on the URLRequest.
+    public func task(
+        expressive: Bool = false,
+        assertHasAccessToken: Bool = true,
+        payload: Payload,
+        passResponse: @escaping PassResponse,
+        errorHandler: ErrorHandler? = nil
+    ) -> URLSessionDataTask? {
+        if assertHasAccessToken {
+            URLQueryItem.assertHasToken()
+        }
+        do {
+            return try urlRequest(payload: payload).callCodableErrorTask(
+                expressive: expressive,
+                action: passResponse,
+                errorHandler: errorHandler
+            )
+        } catch {
+            errorHandler?(error)
+            return nil
+        }
+    }
 }
