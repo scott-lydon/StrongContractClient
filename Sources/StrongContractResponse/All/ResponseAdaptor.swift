@@ -21,14 +21,14 @@ public extension StrongContractClient.Request {
             status: HTTPResponseStatus = .ok,
             version: HTTPVersion = .http1_1,
             headers: HTTPHeaders = .defaultJson,
-            body: Response
+            body: Response,
+            using encoder: JSONEncoder = .init()
         ) throws {
             self.status = status
             self.version = version
             self.headers = headers
-
             // Encode the body into JSON data, throw an error if encoding fails
-            let jsonData = try JSONEncoder().encode(body)
+            let jsonData = try encoder.encode(body)
             self.data = ByteBuffer(data: jsonData)  // Assign the encoded data to the data property
         }
 
