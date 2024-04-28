@@ -22,19 +22,22 @@ public struct Request<Payload: Codable, Response: Codable> {
         method: HTTPMethod,
         baseComponents: URLComponents = defaultComponents,
         initialPath: String = defaultPath,
-        contentType: String = defaultContentType
+        contentType: String = defaultContentType,
+        token: String? = nil
     ) {
         self.path = path
         self.method = method
         self.baseComponents = baseComponents
         self.initialPath = initialPath
         self.contentType = contentType
+        self.token = token
     }
 
     public typealias PassResponse = (Response?) -> Void
 
     /// This is made to be a force unwrap so that the user of this framework may write unit tests.
     public func urlRequest(payload: Payload?, using encoder: JSONEncoder = .init()) throws -> URLRequest {
+        
         // Combine the base components with the initial and specific path
         var components = baseComponents
         let fullPath = "/\(initialPath)/\(path)".replacingOccurrences(of: "//", with: "/")
@@ -67,10 +70,14 @@ public struct Request<Payload: Codable, Response: Codable> {
     public func task(
         autoResume: Bool = true,
         expressive: Bool = false,
+        assertHasAccessToken: Bool = true,
         payload: Payload,
         passResponse: @escaping PassResponse,
         errorHandler: ErrorHandler? = nil
     ) -> URLSessionDataTask? {
+        if assertHasAccessToken {
+            assert(token != "")
+        }
         print("Starting new task with payload:\n", payload)
         do {
             let newTask = try urlRequest(payload: payload)
