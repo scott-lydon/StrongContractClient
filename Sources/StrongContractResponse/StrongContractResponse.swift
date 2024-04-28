@@ -46,7 +46,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
         if let token {
-            request.addValue(token, forHTTPHeaderField: "Authorization")
+            request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         request.addValue(contentType, forHTTPHeaderField: "Content-Type")
         // ... Set other properties on the request as needed ...
