@@ -75,7 +75,9 @@ public struct Request<Payload: Codable, Response: Codable> {
         passResponse: @escaping PassResponse,
         errorHandler: ErrorHandler? = nil
     ) -> URLSessionDataTask? {
+        print("assertHasAccessToken:", assertHasAccessToken)
         if assertHasAccessToken {
+            print("token:", token ?? "nil")
             assert(token != "")
         }
         print("Starting new task with payload:\n", payload)
