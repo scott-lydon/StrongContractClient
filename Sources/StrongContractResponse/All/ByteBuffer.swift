@@ -9,7 +9,6 @@
 import Foundation
 import NIO
 
-
 extension ByteBuffer {
     public var data: Data { .init(buffer: self) }
 }
