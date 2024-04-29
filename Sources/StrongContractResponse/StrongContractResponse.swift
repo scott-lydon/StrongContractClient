@@ -8,6 +8,32 @@ public var defaultComponents: URLComponents = .init()
 public var defaultPath: String = ""
 public var defaultContentType: String = ""
 
+/// **What is it**: 
+///     `Request` is a type intended to be shared on both client and server side to create strong contracts
+///
+/// **Problem `Request` solves**:
+///     Instead of creating a path on the server side, converting types back and forth with `JSON`, creating swagger documents,
+///     Then meetings with server side and client side devs to "sync" up, and errors where incorrect payloads are sent to
+///     to the server, and client side devs are unsure exactly what values are required by the server side, and not sure what to
+///     expect as a response.
+///
+/// **Set up**:
+///     - Import `StrongContractClient` into both the client side app and the server side project.
+///
+/// **How to use**:
+///     1. Create an instance of `Request` assigning the type of the payload you want to send from client to server `Payload` and
+///     the type you intend for the server to respond back with `Response`.  Suppose we call our instance of request: `register`
+///     2. Make a call to `task` on the client side with your instance: `Request.register.task(` The method will know what payload
+///     and response types thanks to the Swift Compiler's Generic type inference.
+///     3. Make a call to `registerHandler` on the server side with your instance: `Request.register.registerHandler(`
+///     The method will know what payload and response types thanks to the Swift Compiler's Generic type inference.
+///
+/// **How to modify**:
+///     *Change to the payload the client sends and the server side receives*:  Simply make a change to the `Payload` type
+///     assigned to your request. merge the changes, create a release, then both client and server update packages.
+///     *Change to the response the server sends and the client side receives*:  Simply make a change to the `Response` type
+///     assigned to your request, merge the changes, create a release, then both client and server update packages.
+///
 public struct Request<Payload: Codable, Response: Codable> {
 
     public var path: String
