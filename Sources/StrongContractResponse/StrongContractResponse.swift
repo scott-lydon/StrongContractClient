@@ -5,7 +5,7 @@ import Foundation
 import Callable
 
 public var defaultComponents: URLComponents = .init()
-public var defaultPath: String = ""
+public var defaultPath: String?
 public var defaultContentType: String = ""
 
 /// **What is it**: 
@@ -34,12 +34,16 @@ public var defaultContentType: String = ""
 ///     *Change to the response the server sends and the client side receives*:  Simply make a change to the `Response` type
 ///     assigned to your request, merge the changes, create a release, then both client and server update packages.
 ///
+/// - Parameters:
+///   - payload: Payload is the type your request instance sends to the server side.  If you don't need to send anything then
+///   you can use the `Empty` type.  That way the corresponding `task` and `registerHandler` can omit the payload.
+///   - response: The `Response` type is the type that the server returns to the client.
 public struct Request<Payload: Codable, Response: Codable> {
 
     public var path: String
     public var method: HTTPMethod
     public var baseComponents: URLComponents = defaultComponents
-    public var initialPath: String = defaultPath
+    public var initialPath: String = .theBaseURL
     public var contentType: String = defaultContentType
     public var token: String?
 
@@ -47,7 +51,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         path: String,
         method: HTTPMethod,
         baseComponents: URLComponents = defaultComponents,
-        initialPath: String = defaultPath,
+        initialPath: String = String.theBaseURL,
         contentType: String = defaultContentType,
         token: String? = nil
     ) {
@@ -82,6 +86,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         if let payload {
             request.httpBody = try encoder.encode(payload)
         }
+        //assert(<#T##condition: Bool##Bool#>)
         return request
     }
 
@@ -114,7 +119,9 @@ public struct Request<Payload: Codable, Response: Codable> {
                     action: passResponse,
                     errorHandler: errorHandler
                 )
-            newTask.resume()
+            if autoResume {
+                newTask.resume()
+            }
             return newTask
         } catch {
             print("URLSession failed with error:", error)
