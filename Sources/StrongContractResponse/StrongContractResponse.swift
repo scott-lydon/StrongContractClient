@@ -112,7 +112,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         expressive: Bool = false,
         assertHasAccessToken: Bool = true,
         payload: Payload,
-        passResponse: @escaping PassResponse,
+        passResponse: @escaping PassResponse = { _ in },
         errorHandler: ErrorHandler? = nil
     ) -> URLSessionDataTask? {
         print("assertHasAccessToken:", assertHasAccessToken)
