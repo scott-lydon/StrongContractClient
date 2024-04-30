@@ -47,8 +47,17 @@ public struct Request<Payload: Codable, Response: Codable> {
     public var contentType: String = defaultContentType
     public var token: String?
 
+    /// Request initailizer.
+    /// - Parameters:
+    ///   - path: A string for the path.  The default argument makes the path the same as the property of function calling it.
+    ///   This defaults to `#function` so that the path is unique as the static properties shouldn't overlap.  This also improves the syntax. 
+    ///   - method: The HTTPMethod of the request.
+    ///   - baseComponents: The base components
+    ///   - initialPath: The defualt base url.
+    ///   - contentType: content type
+    ///   - token: access Token.
     public init(
-        path: String,
+        path: String = #function,
         method: HTTPMethod,
         baseComponents: URLComponents = defaultComponents,
         initialPath: String = String.theBaseURL,
@@ -128,5 +137,29 @@ public struct Request<Payload: Codable, Response: Codable> {
             errorHandler?(error)
             return nil
         }
+    }
+}
+
+extension Request where Payload == Empty {
+
+    /// Helper function for when the payload is empty, this makes it so you don't have to pass payload as an argument.
+    /// - Parameters:
+    ///   - expressive: Prints any errors.
+    ///   - assertHasAccessToken: asserts there is an access token.
+    ///   - passResponse: Exposes the response from the backend.
+    ///   - errorHandler: Exposes any errors, including non async errors.  Errors can come from failed url validation of urlComponents, failing to encode the payload into the request body, and any errors produced when creating a session and making a datatask on the URLRequest.
+    public func task(
+        expressive: Bool = false,
+        assertHasAccessToken: Bool = true,
+        passResponse: @escaping PassResponse,
+        errorHandler: ErrorHandler? = nil
+    ) {
+        self.task(
+            expressive: expressive,
+            assertHasAccessToken: assertHasAccessToken,
+            payload: Empty(),
+            passResponse: passResponse,
+            errorHandler: errorHandler
+        )
     }
 }
