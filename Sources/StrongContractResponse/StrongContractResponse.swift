@@ -47,8 +47,16 @@ public struct Request<Payload: Codable, Response: Codable> {
     public var contentType: String = defaultContentType
     public var token: String?
 
+    /// Request initailizer.
+    /// - Parameters:
+    ///   - path: A string for the path.  The default argument makes the path the same as the property of function calling it.
+    ///   - method: The HTTPMethod of the request.
+    ///   - baseComponents: The base components
+    ///   - initialPath: The defualt base url.
+    ///   - contentType: content type
+    ///   - token: access Token.
     public init(
-        path: String,
+        path: String = #function,
         method: HTTPMethod,
         baseComponents: URLComponents = defaultComponents,
         initialPath: String = String.theBaseURL,
@@ -132,7 +140,6 @@ public struct Request<Payload: Codable, Response: Codable> {
 }
 
 extension Request where Payload == Empty {
-
 
     /// Helper function for when the payload is empty, this makes it so you don't have to pass payload as an argument.
     /// - Parameters:
