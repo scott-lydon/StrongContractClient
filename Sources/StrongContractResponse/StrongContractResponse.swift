@@ -50,6 +50,7 @@ public struct Request<Payload: Codable, Response: Codable> {
     /// Request initailizer.
     /// - Parameters:
     ///   - path: A string for the path.  The default argument makes the path the same as the property of function calling it.
+    ///   This defaults to `#function` so that the path is unique as the static properties shouldn't overlap.  This also improves the syntax. 
     ///   - method: The HTTPMethod of the request.
     ///   - baseComponents: The base components
     ///   - initialPath: The defualt base url.
