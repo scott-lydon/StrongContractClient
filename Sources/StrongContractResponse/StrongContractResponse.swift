@@ -130,3 +130,28 @@ public struct Request<Payload: Codable, Response: Codable> {
         }
     }
 }
+
+extension Request where Payload == Empty {
+
+
+    /// Helper function for when the payload is empty, this makes it so you don't have to pass payload as an argument.
+    /// - Parameters:
+    ///   - expressive: Prints any errors.
+    ///   - assertHasAccessToken: asserts there is an access token.
+    ///   - passResponse: Exposes the response from the backend.
+    ///   - errorHandler: Exposes any errors, including non async errors.  Errors can come from failed url validation of urlComponents, failing to encode the payload into the request body, and any errors produced when creating a session and making a datatask on the URLRequest.
+    public func task(
+        expressive: Bool = false,
+        assertHasAccessToken: Bool = true,
+        passResponse: @escaping PassResponse,
+        errorHandler: ErrorHandler? = nil
+    ) {
+        self.task(
+            expressive: expressive,
+            assertHasAccessToken: assertHasAccessToken,
+            payload: Empty(),
+            passResponse: passResponse,
+            errorHandler: errorHandler
+        )
+    }
+}
