@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum URLValidationError: Error, LocalizedError {
+enum URLValidationError: Error, LocalizedError, Equatable {
     case missingScheme(String)
     case missingHost(String)
     case missingPath(String)

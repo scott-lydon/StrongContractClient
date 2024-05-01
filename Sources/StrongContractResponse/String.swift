@@ -36,7 +36,7 @@ extension String {
     }
 
     /// Cache the base URL to avoid repeated lookups.
-    private static var _cachedBaseURL: String?
+    internal static var _cachedBaseURL: String?
 
     /// Typical keys developers might use to store their base url.
     public static var typicalKeys: [String] = [
