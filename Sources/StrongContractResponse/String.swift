@@ -17,6 +17,7 @@ extension String {
 
         guard let url = defaultPath ??
                 typicalKeys.compactMap({ usualCandidates(for: $0) }).first else {
+#if !canImport(Vapor)
             let errorString =
                 """
                 No base URL is set. Please assign it to global
@@ -27,6 +28,7 @@ extension String {
                 """
             errorString.logInfo()
             assertionFailure(errorString)
+#endif
             return ""
         }
         _cachedBaseURL = url
