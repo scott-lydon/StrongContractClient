@@ -16,7 +16,7 @@ extension String {
         }
 
         guard let url = defaultPath ??
-                typicalKeys.compactMap({ usualCandidates(for: $0) }).first else {
+                typicalKeys.compactMap(usualCandidates).first else {
 #if !canImport(Vapor)
             let errorString =
                 """
