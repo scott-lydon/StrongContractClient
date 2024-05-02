@@ -19,7 +19,7 @@ public extension StrongContractClient.Request {
     ///   - payloadToResponse: A closure that processes the request and returns a response.
     func registerHandler(
         app: any RoutesBuilder,
-        verbose: Bool,
+        verbose: Bool = false,
         payloadToResponse: @escaping (Payload, Vapor.Request) async throws -> ResponseAdaptor
     ) {
         // Split the path by '/' to get individual components
