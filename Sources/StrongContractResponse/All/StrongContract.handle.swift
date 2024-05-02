@@ -13,8 +13,13 @@ public extension StrongContractClient.Request {
 
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
+    /// - Parameters:
+    ///   - app: The application's route builder to which the route will be registered.
+    ///   - verbose: Flag to enable or disable verbose logging for debugging.
+    ///   - payloadToResponse: A closure that processes the request and returns a response.
     func registerHandler(
         app: any RoutesBuilder,
+        verbose: Bool,
         payloadToResponse: @escaping (Payload, Vapor.Request) async throws -> ResponseAdaptor
     ) {
         // Split the path by '/' to get individual components
@@ -28,6 +33,9 @@ public extension StrongContractClient.Request {
             partialPathComponents :
             CollectionOfOne(.init(stringLiteral: initialPath)) + partialPathComponents
 
+        if verbose {
+            print(pathComponents)
+        }
         // let test:
         switch method {
         case .get, .head:
@@ -38,23 +46,28 @@ public extension StrongContractClient.Request {
             // apply to HEAD requests as well,
             // but the response body will not be sent to the client.
             app.get(pathComponents) {
-                try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                if verbose { print("We received: \($0)") }
+                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .post:
             app.post(pathComponents) { 
-                try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                if verbose { print("We received: \($0)") }
+                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .put:
             app.put(pathComponents) {
-                try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                if verbose { print("We received: \($0)") }
+                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .delete:
             app.delete(pathComponents) {
-                try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                if verbose { print("We received: \($0)") }
+                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .patch:
             app.patch(pathComponents) {
-                try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                if verbose { print("We received: \($0)") }
+                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         }
     }
