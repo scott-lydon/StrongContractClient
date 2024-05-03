@@ -11,6 +11,8 @@ import CommonExtensions
 
 public extension StrongContractClient.Request {
 
+    typealias PayloadToResponse = (Payload, Vapor.Request) async throws -> ResponseAdaptor
+
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
     /// - Parameters:
@@ -20,18 +22,11 @@ public extension StrongContractClient.Request {
     func registerHandler(
         app: any RoutesBuilder,
         verbose: Bool = false,
-        payloadToResponse: @escaping (Payload, Vapor.Request) async throws -> ResponseAdaptor
+        payloadToResponse: @escaping PayloadToResponse
     ) {
         // Split the path by '/' to get individual components
-        let pathSegments = path.split(separator: "/").map(String.init)
-
         // Convert string path segments to PathComponent
-        let partialPathComponents = pathSegments.map(PathComponent.init)
-
-        // Prepend initialPath if it's not empty to the path components
-        let pathComponents: [PathComponent] = initialPath.isEmpty ?
-            partialPathComponents :
-            CollectionOfOne(.init(stringLiteral: initialPath)) + partialPathComponents
+        let pathComponents = path.split(separator: "/").map(String.init).map(PathComponent.init)
 
         if verbose {
             print(pathComponents)
@@ -50,7 +45,7 @@ public extension StrongContractClient.Request {
                 return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .post:
-            app.post(pathComponents) { 
+            app.post(pathComponents) {
                 if verbose { print("We received: \($0)") }
                 return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
