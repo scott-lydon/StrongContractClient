@@ -8,6 +8,10 @@
 import Foundation
 import Vapor
 
+/// I ResponseAdaptor is a carrier for the Vapor.Response properties and the StrongContractClient.Response.
+/// This lets the user of registerHandler define Vapor.Response properties, while preserving a strong contract, expecting the correct Response.
+/// Because it is defined within `StrongContractClient.Request` it has access to the `Response` and `Payload` types of a request, though
+/// only the `Response` is needed for its purpose. 
 public extension StrongContractClient.Request {
 
     struct ResponseAdaptor {
