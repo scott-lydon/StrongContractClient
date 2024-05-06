@@ -16,7 +16,7 @@ extension String {
         }
 
         guard let url = defaultPath ??
-                typicalKeys.compactMap({ usualCandidates(for: $0) }).first else {
+                typicalKeys.compactMap(usualCandidates).first else {
             let errorString =
                 """
                 No base URL is set. Please assign it to global
