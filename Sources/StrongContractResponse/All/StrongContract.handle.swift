@@ -27,6 +27,18 @@ public extension StrongContractClient.Request {
         // Convert string path segments to PathComponent
         let pathComponents = path.split(separator: "/").map(String.init).map(PathComponent.init)
 
+        // Split the path by '/' to get individual components
+          let pathSegments2 = path.split(separator: "/").map(String.init)
+
+          // Convert string path segments to PathComponent
+          let partialPathComponents2 = pathSegments2.map(PathComponent.init)
+
+          // Prepend initialPath if it's not empty to the path components
+          let pathComponents2: [PathComponent] = initialPath.isEmpty ?
+              partialPathComponents2 :
+              CollectionOfOne(.init(stringLiteral: initialPath)) + partialPathComponents2
+        print("path components new: ", pathComponents)
+        print("path components old: ", pathComponents2)
         if verbose {
             print(pathComponents)
         }
