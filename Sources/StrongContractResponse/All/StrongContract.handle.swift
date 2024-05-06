@@ -7,7 +7,6 @@
 
 #if canImport(Vapor)
 import Vapor
-import CommonExtensions
 
 public extension StrongContractClient.Request {
 
