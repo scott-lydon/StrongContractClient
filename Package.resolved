@@ -38,15 +38,6 @@
       }
     },
     {
-      "identity" : "encryptdecryptkey",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/scott-lydon/EncryptDecryptKey.git",
-      "state" : {
-        "revision" : "2edb14cf97fea00ec8d172c82aa56d419ef937b8",
-        "version" : "1.0.4"
-      }
-    },
-    {
       "identity" : "multipart-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/multipart-kit.git",
