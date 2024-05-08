@@ -43,42 +43,27 @@ public extension StrongContractClient.Request {
             // but the response body will not be sent to the client.
             app.get(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
-                    return try await payloadToResponse(data, $0).vaporResponse
-                }
-                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                return try await payloadToResponse($0.codableBodyExemptingData(), $0).vaporResponse
             }
         case .post:
             app.post(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
-                    return try await payloadToResponse(data, $0).vaporResponse
-                }
-                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                return try await payloadToResponse($0.codableBodyExemptingData(), $0).vaporResponse
             }
         case .put:
             app.put(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
-                    return try await payloadToResponse(data, $0).vaporResponse
-                }
-                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                return try await payloadToResponse($0.codableBodyExemptingData(), $0).vaporResponse
             }
         case .delete:
             app.delete(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
-                    return try await payloadToResponse(data, $0).vaporResponse
-                }
-                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                return try await payloadToResponse($0.codableBodyExemptingData(), $0).vaporResponse
             }
         case .patch:
             app.patch(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
-                    return try await payloadToResponse(data, $0).vaporResponse
-                }
-                return try await payloadToResponse($0.codableBody(), $0).vaporResponse
+                return try await payloadToResponse($0.codableBodyExemptingData(), $0).vaporResponse
             }
         }
     }
