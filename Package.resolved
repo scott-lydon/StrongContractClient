@@ -1,5 +1,5 @@
 {
-  "originHash" : "3d2cd216553d1bc03a72be7837c7187c98f201bc978cece6a82acfa474285ab7",
+  "originHash" : "198a0b7f5535a3741fe4f263822a8baec15426d138dd66a36389997db7bb450e",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ElevatedUnderdogs/Callable.git",
       "state" : {
-        "revision" : "0540b62dfa5c28879d76f1ae2532b7bb8a50ddda",
-        "version" : "1.5.0"
+        "revision" : "bbb7630d631e7e0432d97cada1eca69bd5216a06",
+        "version" : "2.0.0"
       }
     },
     {
