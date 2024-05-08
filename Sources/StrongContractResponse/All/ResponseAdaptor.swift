@@ -32,8 +32,7 @@ public extension StrongContractClient.Request {
             self.version = version
             self.headers = headers
             // Encode the body into JSON data, throw an error if encoding fails
-            let jsonData = try encoder.encode(body)
-            self.data = ByteBuffer(data: jsonData)  // Assign the encoded data to the data property
+            self.data = ByteBuffer(data: try encoder.encode(body))  // Assign the encoded data to the data property
         }
 
         // Computed property to generate a Vapor.Response from the adaptor

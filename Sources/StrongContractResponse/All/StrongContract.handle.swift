@@ -12,6 +12,7 @@ public extension StrongContractClient.Request {
 
     typealias PayloadToResponse = (Payload, Vapor.Request) async throws -> ResponseAdaptor
 
+
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
     /// - Parameters:
@@ -27,24 +28,13 @@ public extension StrongContractClient.Request {
         // Convert string path segments to PathComponent
         let pathComponents = path.split(separator: "/").map(String.init).map(PathComponent.init)
 
-        // Split the path by '/' to get individual components
-          let pathSegments2 = path.split(separator: "/").map(String.init)
-
-          // Convert string path segments to PathComponent
-          let partialPathComponents2 = pathSegments2.map(PathComponent.init)
-
-          // Prepend initialPath if it's not empty to the path components
-          let pathComponents2: [PathComponent] = initialPath.isEmpty ?
-              partialPathComponents2 :
-              CollectionOfOne(.init(stringLiteral: initialPath)) + partialPathComponents2
-        print("path components new: ", pathComponents)
-        print("path components old: ", pathComponents2)
         if verbose {
             print(pathComponents)
         }
-        // let test:
+
         switch method {
         case .get, .head:
+
             // Register a route to handle HEAD requests.
             // In Vapor, HEAD requests are handled by GET route handlers without
             // sending the body in the response.
@@ -53,26 +43,41 @@ public extension StrongContractClient.Request {
             // but the response body will not be sent to the client.
             app.get(pathComponents) {
                 if verbose { print("We received: \($0)") }
+                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
+                    return try await payloadToResponse(data, $0).vaporResponse
+                }
                 return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .post:
             app.post(pathComponents) {
                 if verbose { print("We received: \($0)") }
+                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
+                    return try await payloadToResponse(data, $0).vaporResponse
+                }
                 return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .put:
             app.put(pathComponents) {
                 if verbose { print("We received: \($0)") }
+                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
+                    return try await payloadToResponse(data, $0).vaporResponse
+                }
                 return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .delete:
             app.delete(pathComponents) {
                 if verbose { print("We received: \($0)") }
+                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
+                    return try await payloadToResponse(data, $0).vaporResponse
+                }
                 return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         case .patch:
             app.patch(pathComponents) {
                 if verbose { print("We received: \($0)") }
+                if Payload.self == Data.self, let data = $0.body.data?.data as? Payload {
+                    return try await payloadToResponse(data, $0).vaporResponse
+                }
                 return try await payloadToResponse($0.codableBody(), $0).vaporResponse
             }
         }
