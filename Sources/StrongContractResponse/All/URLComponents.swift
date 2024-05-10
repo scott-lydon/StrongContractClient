@@ -8,6 +8,16 @@
 import Foundation
 
 extension URLComponents {
+
+    enum URLValidationError: Error {
+         case missingScheme(String)
+         case missingHost(String)
+         case missingPath(String)
+         case invalidPath(String)
+         case invalidCharactersInPath(String)
+         case unknown(String)
+     }
+
     func urlAndValidate() throws -> URL {
         guard let scheme else {
             throw URLValidationError.missingScheme("Current scheme: nil")
@@ -23,6 +33,14 @@ extension URLComponents {
 
         guard path.hasPrefix("/") else {
             throw URLValidationError.invalidPath("Current path: \(path)")
+        }
+
+        // Check for invalid characters or patterns in the path
+        let invalidPatterns = ["://", "..", "::", "/:/"]
+        for pattern in invalidPatterns {
+            if path.contains(pattern) {
+                throw URLValidationError.invalidCharactersInPath("Path contains invalid pattern '\(pattern)': \(path)")
+            }
         }
 
         // If all validations pass but url is still nil, it indicates an unknown problem.

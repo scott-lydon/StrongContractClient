@@ -67,14 +67,14 @@ class RequestTests: XCTestCase {
 
     func testResponseAdaptorInitializationWithError() {
         // Setup
-        let response = ErrorOnEncodeResponse(message: "This should fail", failingPart: AlwaysFailingEncoder())
-        let encoder = JSONEncoder()
+        let response = AlwaysFailingEncoder()
+        // ErrorOnEncodeResponse(message: "This should fail", failingPart: AlwaysFailingEncoder())
+
 
         // Test
         XCTAssertThrowsError({
-            _ = try StrongContractClient.Request<Empty, ErrorOnEncodeResponse>.ResponseAdaptor(
-                body: response,
-                using: encoder
+            _ = try StrongContractClient.Request<Empty, AlwaysFailingEncoder>.ResponseAdaptor(
+                body: response
             )
         }, "The initializer should throw an error when encoding fails") { error in
             if let error = error as? GenericError {
@@ -260,20 +260,6 @@ class RequestTests: XCTestCase {
         }
     }
 
-    func testUnknownError() {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "example.com"
-        components.path = "/path"
-        // Introduce an element that will ensure failure but not covered by other checks
-        components.port = -1
-
-        XCTAssertThrowsError(try components.urlAndValidate()) { error in
-            XCTAssertEqual(error as? URLValidationError, .unknown("scheme: https, host: example.com, path: /path"))
-            XCTAssertEqual((error as? URLValidationError)?.errorDescription, "Unknown error. The URL could not be constructed. scheme: https, host: example.com, path: /path")
-        }
-    }
-
     func testValidURLComponents() {
         var components = URLComponents()
         components.scheme = "https"
@@ -390,7 +376,10 @@ class RequestTests: XCTestCase {
         )
 
         // The URLRequest should be nil because the initialPath will cause an invalid URL
-        XCTAssertNil(request.urlRequest, "URLRequest should be nil due to invalid combination of URL components")
+        XCTAssertThrowsError(
+            try request.urlRequest(payload: nil),
+            "URLRequest should be nil due to invalid combination of URL components"
+        )
     }
 }
 

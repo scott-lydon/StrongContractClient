@@ -1,5 +1,5 @@
 {
-  "originHash" : "3d9f11da0bc8628bfdad5a0be3cbb6e33680755e363a19d002388ea29ca79190",
+  "originHash" : "98a8b9acdb91598316a223e11b69824a2b6bff2ab3232a3d50072defbd835df7",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ElevatedUnderdogs/Callable.git",
       "state" : {
-        "revision" : "0540b62dfa5c28879d76f1ae2532b7bb8a50ddda",
-        "version" : "1.5.0"
+        "revision" : "bbb7630d631e7e0432d97cada1eca69bd5216a06",
+        "version" : "2.0.0"
       }
     },
     {
@@ -35,15 +35,6 @@
       "state" : {
         "revision" : "a31f44ebfbd15a2cc0fda705279676773ac16355",
         "version" : "4.14.1"
-      }
-    },
-    {
-      "identity" : "encryptdecryptkey",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/scott-lydon/EncryptDecryptKey.git",
-      "state" : {
-        "revision" : "2edb14cf97fea00ec8d172c82aa56d419ef937b8",
-        "version" : "1.0.4"
       }
     },
     {
