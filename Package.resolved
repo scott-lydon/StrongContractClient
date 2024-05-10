@@ -1,5 +1,5 @@
 {
-  "originHash" : "a0f0634e5eb8588126a47d5d36913300e6adb8fc921fc973eaa560cf5a905d2e",
+  "originHash" : "3d9f11da0bc8628bfdad5a0be3cbb6e33680755e363a19d002388ea29ca79190",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -35,6 +35,15 @@
       "state" : {
         "revision" : "a31f44ebfbd15a2cc0fda705279676773ac16355",
         "version" : "4.14.1"
+      }
+    },
+    {
+      "identity" : "encryptdecryptkey",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scott-lydon/EncryptDecryptKey.git",
+      "state" : {
+        "revision" : "2edb14cf97fea00ec8d172c82aa56d419ef937b8",
+        "version" : "1.0.4"
       }
     },
     {
