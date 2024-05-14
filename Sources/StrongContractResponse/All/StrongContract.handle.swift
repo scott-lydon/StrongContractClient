@@ -70,6 +70,8 @@ public extension StrongContractClient.Request {
 
 public extension StrongContractClient.Request where Response == Data {
 
+    // We need to break the contract in order to return a byte stream `streamFile(at: )`
+    // Thats why we return a Vapor.Response here
     typealias PayloadToData = (Payload?, Vapor.Request) async throws -> Vapor.Response
 
     func register(
