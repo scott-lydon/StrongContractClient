@@ -31,8 +31,16 @@ public extension StrongContractClient.Request {
             self.status = status
             self.version = version
             self.headers = headers
-            // Encode the body into JSON data, throw an error if encoding fails
-            self.data = ByteBuffer(data: try encoder.encode(body))  // Assign the encoded data to the data property
+
+            if Response.self == Data.self, let data: Data = body as? Data {
+                // If the Response is of type: Data,
+                // then we shouldn't encode it as that would be redundant,
+                // and would make the Data a huge string instead of binary.  
+                self.data = ByteBuffer(data: data)
+            } else {
+                // Encode the body into JSON data, throw an error if encoding fails
+                self.data = ByteBuffer(data: try encoder.encode(body))
+            }
         }
 
         // Computed property to generate a Vapor.Response from the adaptor

@@ -12,7 +12,6 @@ public extension StrongContractClient.Request {
 
     typealias PayloadToResponse = (Payload, Vapor.Request) async throws -> ResponseAdaptor
 
-
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
     /// - Parameters:
