@@ -9,9 +9,9 @@
 import Vapor
 
 public extension StrongContractClient.Request {
-    
+
     typealias PayloadToResponse = (Payload, Vapor.Request) async throws -> ResponseAdaptor
-    
+
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
     /// - Parameters:
@@ -21,7 +21,7 @@ public extension StrongContractClient.Request {
     func register(
         app: any RoutesBuilder,
         verbose: Bool = false,
-        payloadToResponse: @escaping PayloadToResponse
+        handler: @escaping PayloadToResponse
     ) {
         // Split the path by '/' to get individual components
         // Convert string path segments to PathComponent
@@ -42,27 +42,27 @@ public extension StrongContractClient.Request {
             // but the response body will not be sent to the client.
             app.get(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                return try await payloadToResponse($0.decodedObject(), $0).vaporResponse
+                return try await handler($0.decodedObject(), $0).vaporResponse
             }
         case .post:
             app.post(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                return try await payloadToResponse($0.decodedObject(), $0).vaporResponse
+                return try await handler($0.decodedObject(), $0).vaporResponse
             }
         case .put:
             app.put(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                return try await payloadToResponse($0.decodedObject(), $0).vaporResponse
+                return try await handler($0.decodedObject(), $0).vaporResponse
             }
         case .delete:
             app.delete(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                return try await payloadToResponse($0.decodedObject(), $0).vaporResponse
+                return try await handler($0.decodedObject(), $0).vaporResponse
             }
         case .patch:
             app.patch(pathComponents) {
                 if verbose { print("We received: \($0)") }
-                return try await payloadToResponse($0.decodedObject(), $0).vaporResponse
+                return try await handler($0.decodedObject(), $0).vaporResponse
             }
         }
     }

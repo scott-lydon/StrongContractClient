@@ -47,7 +47,6 @@ public struct Request<Payload: Codable, Response: Codable> {
     public var contentType: String = defaultContentType
     public var token: String?
 
-
     /// Initializer
     /// - Parameters:
     ///   - path: A string for the path.  The default argument makes the path the same as the property of function calling it.
