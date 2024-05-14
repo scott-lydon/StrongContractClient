@@ -10,7 +10,7 @@ import Vapor
 
 public extension StrongContractClient.Request {
 
-    typealias Handler = (Payload, Vapor.Request) async throws -> ResponseAdaptor
+    typealias PayloadToResponse = (Payload, Vapor.Request) async throws -> ResponseAdaptor
 
     /// This method registers routes, and exposes a callback for
     ///  the call site to process the request and return a response
@@ -21,7 +21,7 @@ public extension StrongContractClient.Request {
     func register(
         app: any RoutesBuilder,
         verbose: Bool = false,
-        handler: @escaping Handler
+        handler: @escaping PayloadToResponse
     ) {
         // Split the path by '/' to get individual components
         // Convert string path segments to PathComponent
