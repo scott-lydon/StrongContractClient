@@ -9,6 +9,9 @@ import Foundation
 
 extension String {
 
+    /// This access token is the default for the initializers for `Request`
+    public static var accessToken: String?
+
     /// Attempts to find the base url by checking
     public static var theBaseURL: String {
         if let cachedURL = _cachedBaseURL {

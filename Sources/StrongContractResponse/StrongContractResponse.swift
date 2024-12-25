@@ -45,7 +45,7 @@ public struct Request<Payload: Codable, Response: Codable> {
     public var baseComponents: URLComponents = defaultComponents
     public var initialPath: String = .theBaseURL
     public var contentType: String = defaultContentType
-    public var token: String?
+    public var token: String? = String.accessToken
 
     /// Initializer
     /// - Parameters:
@@ -62,7 +62,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         baseComponents: URLComponents = defaultComponents,
         initialPath: String = String.theBaseURL,
         mimType: MimeType = .json,
-        token: String? = nil
+        token: String? = String.accessToken
     ) {
         self.path = path
         self.method = method
@@ -87,7 +87,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         baseComponents: URLComponents = defaultComponents,
         initialPath: String = String.theBaseURL,
         contentType: String,
-        token: String? = nil
+        token: String? = String.accessToken
     ) {
         self.path = path
         self.method = method
