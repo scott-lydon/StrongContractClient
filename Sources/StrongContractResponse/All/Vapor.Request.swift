@@ -11,6 +11,7 @@ import Vapor
 import Callable
 
 extension Vapor.Request {
+    
     func decryptedData() throws -> Data {
         guard let encryptedData = body.data?.data else {
             throw Abort(.badRequest, reason: "body data not found")

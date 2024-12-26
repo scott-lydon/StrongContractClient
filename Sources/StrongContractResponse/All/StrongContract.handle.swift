@@ -26,14 +26,13 @@ public extension StrongContractClient.Request {
         // Split the path by '/' to get individual components
         // Convert string path segments to PathComponent
         let pathComponents = path.split(separator: "/").map(String.init).map(PathComponent.init)
-
+        
         if verbose {
             print(pathComponents)
         }
-
+        
         switch method {
         case .get, .head:
-
             // Register a route to handle HEAD requests.
             // In Vapor, HEAD requests are handled by GET route handlers without
             // sending the body in the response.
@@ -66,12 +65,18 @@ public extension StrongContractClient.Request {
             }
         }
     }
+}
 
-    typealias Downloader = (Payload?, Vapor.Request) async throws -> Vapor.Response
+public extension StrongContractClient.Request where Response == Data {
+
+    // We need to break the contract in order to return a byte stream `streamFile(at: )`
+    // Thats why we return a Vapor.Response here
+    typealias PayloadToData = (Payload?, Vapor.Request) async throws -> Vapor.Response
+
     func register(
         app: any RoutesBuilder,
         verbose: Bool = false,
-        downloader: @escaping Downloader
+        downloader: @escaping PayloadToData
     ) {
         let pathComponents = path.split(separator: "/").map(String.init).map(PathComponent.init)
         if verbose {
