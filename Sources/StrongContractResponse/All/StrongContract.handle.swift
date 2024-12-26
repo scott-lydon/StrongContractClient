@@ -111,4 +111,5 @@ public extension StrongContractClient.Request where Response == Data {
         }
     }
 }
+
 #endif
