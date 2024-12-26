@@ -31,5 +31,10 @@ extension Vapor.Request {
         }
         throw GenericError(text: "Body data was nil")
     }
+
+    func decodedObject<T: Decodable>(using decoder: JSONDecoder = .init()) throws -> T {
+        guard let data = body.data?.data else { throw GenericError(text: "Body data was nil") }
+        return try data.decodedObject(using: decoder)
+    }
 }
 #endif
