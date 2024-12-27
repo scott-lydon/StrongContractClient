@@ -92,7 +92,7 @@ public extension StrongContractClient.Request where Response == Data {
             if let empty = Empty() as? Payload {
                 app.get(pathComponents) {
                     if verbose { print("We received: \($0)") }
-                    return try await downloader(nil, $0)
+                    return try await downloader(empty, $0)
                 }
             } else {
                 assertionFailure("Get should not have a body.")

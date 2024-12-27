@@ -64,6 +64,9 @@ public struct Request<Payload: Codable, Response: Codable> {
         mimType: MimeType = .json,
         token: String? = String.accessToken
     ) {
+        if method == .get {
+            assert(Payload.self == Empty.self, "Get requests should only have an empty payload")
+        }
         self.path = path
         self.method = method
         self.baseComponents = baseComponents
@@ -89,6 +92,9 @@ public struct Request<Payload: Codable, Response: Codable> {
         contentType: String,
         token: String? = String.accessToken
     ) {
+        if method == .get {
+            assert(Payload.self == Empty.self, "Get requests should only have an empty payload")
+        }
         self.path = path
         self.method = method
         self.baseComponents = baseComponents
