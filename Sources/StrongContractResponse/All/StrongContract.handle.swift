@@ -39,9 +39,13 @@ public extension StrongContractClient.Request {
             // This means that any logic and headers applied in GET handlers will
             // apply to HEAD requests as well,
             // but the response body will not be sent to the client.
-            app.get(pathComponents) {
-                if verbose { print("We received: \($0)") }
-                return try await handler($0.decodedObject(), $0).vaporResponse
+            if let empty = Empty() as? Payload {
+                app.get(pathComponents) {
+                    if verbose { print("We received: \($0)") }
+                    return try await handler(empty, $0).vaporResponse
+                }
+            } else {
+                assertionFailure("Get should not have a body.")
             }
         case .post:
             app.post(pathComponents) {
@@ -84,9 +88,14 @@ public extension StrongContractClient.Request where Response == Data {
         }
         switch method {
         case .get, .head:
-            app.get(pathComponents) {
-                if verbose { print("We received: \($0)") }
-                return try await downloader($0.body.data?.data.decodedObject(), $0)
+
+            if let empty = Empty() as? Payload {
+                app.get(pathComponents) {
+                    if verbose { print("We received: \($0)") }
+                    return try await downloader(nil, $0)
+                }
+            } else {
+                assertionFailure("Get should not have a body.")
             }
         case .post:
             app.post(pathComponents) {
