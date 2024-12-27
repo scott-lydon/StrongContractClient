@@ -116,15 +116,21 @@ public struct Request<Payload: Codable, Response: Codable> {
         let url = try components.urlAndValidate()
         // Create the URLRequest and set its properties
         var request = URLRequest(url: url)
+        if let payload {
+            request.httpBody = Payload.self == Empty.self ? nil : try encoder.encode(payload)
+        }
         request.httpMethod = method.rawValue
+        if request.httpMethod == HTTPMethod.get.rawValue {
+            assert(request.httpBody == nil, "URL Request session will throw an error if the method is get and body is not nil")
+            request.httpBody = nil
+        }
+
         if let token {
             request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         request.addValue(contentType, forHTTPHeaderField: "Content-Type")
         // ... Set other properties on the request as needed ...
-        if let payload {
-            request.httpBody = try encoder.encode(payload)
-        }
+
         //assert(<#T##condition: Bool##Bool#>)
         return request
     }
@@ -148,7 +154,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         print("assertHasAccessToken:", assertHasAccessToken)
         if assertHasAccessToken {
             print("token:", token ?? "nil")
-            assert(token != "")
+            assert(token != "" && token != nil)
         }
         print("Starting new task with payload:\n", payload)
         do {

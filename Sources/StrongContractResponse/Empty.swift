@@ -8,6 +8,6 @@
 import Foundation
 
 /// Provided in place of Payloads that aren't necessary.
-public struct Empty: Codable {
+public struct Empty: Codable, Equatable {
     public init() {}
 }
