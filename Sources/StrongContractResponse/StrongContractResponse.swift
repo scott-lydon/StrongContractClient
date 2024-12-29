@@ -5,8 +5,8 @@ import Foundation
 import Callable
 
 public var defaultComponents: URLComponents = .init()
-public var defaultPath: String?
-public var defaultContentType: String = ""
+public var defaultPath: String = ""
+public var defaultContentType: String = "application/json"
 
 /// **What is it**: 
 ///     `Request` is a type intended to be shared on both client and server side to create strong contracts
@@ -40,12 +40,13 @@ public var defaultContentType: String = ""
 ///   - response: The `Response` type is the type that the server returns to the client.
 public struct Request<Payload: Codable, Response: Codable> {
 
-    public var path: String
-    public var method: HTTPMethod
-    public var baseComponents: URLComponents = defaultComponents
-    public var initialPath: String = .theBaseURL
-    public var contentType: String = defaultContentType
-    public var token: String? = String.accessToken
+    public let path: String
+    public let method: HTTPMethod
+    public let baseComponents: URLComponents
+    public let initialPath: String
+    public let contentType: String
+    public let token: String?
+    public let assertHasAccessToken: Bool
 
     /// Initializer
     /// - Parameters:
@@ -62,7 +63,8 @@ public struct Request<Payload: Codable, Response: Codable> {
         baseComponents: URLComponents = defaultComponents,
         initialPath: String = String.theBaseURL,
         mimType: MimeType = .json,
-        token: String? = String.accessToken
+        token: String? = String.accessToken,
+        assertHasAccessToken: Bool = true
     ) {
         if method == .get {
             assert(Payload.self == Empty.self, "Get requests should only have an empty payload")
@@ -73,6 +75,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         self.initialPath = initialPath
         self.contentType = mimType.rawValue
         self.token = token
+        self.assertHasAccessToken = assertHasAccessToken
     }
 
     /// Request initailizer.
@@ -89,8 +92,9 @@ public struct Request<Payload: Codable, Response: Codable> {
         method: HTTPMethod,
         baseComponents: URLComponents = defaultComponents,
         initialPath: String = String.theBaseURL,
-        contentType: String,
-        token: String? = String.accessToken
+        contentType: String = defaultContentType,
+        token: String? = String.accessToken,
+        assertHasAccessToken: Bool = true
     ) {
         if method == .get {
             assert(Payload.self == Empty.self, "Get requests should only have an empty payload")
@@ -101,6 +105,7 @@ public struct Request<Payload: Codable, Response: Codable> {
         self.initialPath = initialPath
         self.contentType = contentType
         self.token = token
+        self.assertHasAccessToken = assertHasAccessToken
     }
 
     public typealias PassResponse = (Response?) -> Void
@@ -137,7 +142,6 @@ public struct Request<Payload: Codable, Response: Codable> {
         request.addValue(contentType, forHTTPHeaderField: "Content-Type")
         // ... Set other properties on the request as needed ...
 
-        //assert(<#T##condition: Bool##Bool#>)
         return request
     }
 
@@ -152,13 +156,13 @@ public struct Request<Payload: Codable, Response: Codable> {
     public func task(
         autoResume: Bool = true,
         expressive: Bool = false,
-        assertHasAccessToken: Bool = true,
+        assertHasAccessToken: Bool? = nil,
         payload: Payload,
         passResponse: @escaping PassResponse = { _ in },
         errorHandler: ErrorHandler? = nil
     ) -> URLSessionDataTask? {
-        print("assertHasAccessToken:", assertHasAccessToken)
-        if assertHasAccessToken {
+        print("assertHasAccessToken:", assertHasAccessToken as Any)
+        if assertHasAccessToken ?? self.assertHasAccessToken {
             print("token:", token ?? "nil")
             assert(token != "" && token != nil)
         }
