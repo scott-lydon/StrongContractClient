@@ -48,36 +48,6 @@ public struct Request<Payload: Codable, Response: Codable> {
     public let token: String?
     public let assertHasAccessToken: Bool
 
-    /// Initializer
-    /// - Parameters:
-    ///   - path: A string for the path.  The default argument makes the path the same as the property of function calling it.
-    ///   This defaults to `#function` so that the path is unique as the static properties shouldn't overlap.  This also improves the syntax.
-    ///   - method: The HTTPMethod of the request.
-    ///   - baseComponents: The base components
-    ///   - initialPath: The defualt base url.
-    ///   - mimType: MimType, default is JSON
-    ///   - token: access Token.
-    public init(
-        path: String = #function,
-        method: HTTPMethod,
-        baseComponents: URLComponents = defaultComponents,
-        initialPath: String = String.theBaseURL,
-        mimType: MimeType = .json,
-        token: String? = String.accessToken,
-        assertHasAccessToken: Bool = true
-    ) {
-        if method == .get {
-            assert(Payload.self == Empty.self, "Get requests should only have an empty payload")
-        }
-        self.path = path
-        self.method = method
-        self.baseComponents = baseComponents
-        self.initialPath = initialPath
-        self.contentType = mimType.rawValue
-        self.token = token
-        self.assertHasAccessToken = assertHasAccessToken
-    }
-
     /// Request initailizer.
     /// - Parameters:
     ///   - path: A string for the path.  The default argument makes the path the same as the property of function calling it.
@@ -104,6 +74,36 @@ public struct Request<Payload: Codable, Response: Codable> {
         self.baseComponents = baseComponents
         self.initialPath = initialPath
         self.contentType = contentType
+        self.token = token
+        self.assertHasAccessToken = assertHasAccessToken
+    }
+
+    /// Initializer
+    /// - Parameters:
+    ///   - path: A string for the path.  The default argument makes the path the same as the property of function calling it.
+    ///   This defaults to `#function` so that the path is unique as the static properties shouldn't overlap.  This also improves the syntax.
+    ///   - method: The HTTPMethod of the request.
+    ///   - baseComponents: The base components
+    ///   - initialPath: The defualt base url.
+    ///   - mimType: MimType, default is JSON
+    ///   - token: access Token.
+    public init(
+        path: String = #function,
+        method: HTTPMethod,
+        baseComponents: URLComponents = defaultComponents,
+        initialPath: String = String.theBaseURL,
+        mimType: MimeType,
+        token: String? = String.accessToken,
+        assertHasAccessToken: Bool = true
+    ) {
+        if method == .get {
+            assert(Payload.self == Empty.self, "Get requests should only have an empty payload")
+        }
+        self.path = path
+        self.method = method
+        self.baseComponents = baseComponents
+        self.initialPath = initialPath
+        self.contentType = mimType.rawValue
         self.token = token
         self.assertHasAccessToken = assertHasAccessToken
     }
