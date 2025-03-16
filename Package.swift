@@ -6,44 +6,31 @@ import PackageDescription
 let package = Package(
     name: "StrongContractClient",
     platforms: [
-       .iOS(.v13),
-       .macOS(.v10_15)
+       .iOS(.v13), // Specify the minimum platform version (iOS 13 in this example)
+       .macOS(.v10_15), // Add other platforms as needed, for example, macOS
     ],
     products: [
         .library(
-            name: "StrongContract",
-            targets: ["StrongContract"]
-        ),
-        .library(
-            name: "StrongContractServer",
-            targets: ["StrongContractServer"]
-        )
+            name: "StrongContractClient",
+            targets: ["StrongContractClient"]),
     ],
     dependencies: [
+        // Existing dependencies
         .package(url: "https://github.com/ElevatedUnderdogs/Callable.git", .upToNextMajor(from: "3.0.0")),
-        .package(url: "https://github.com/scott-lydon/EncryptDecryptKey.git", from: "1.0.0"),
-        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0") // ✅ Vapor is included conditionally below
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
+        .package(url: "https://github.com/scott-lydon/EncryptDecryptKey.git", from: "1.0.0")
     ],
     targets: [
         .target(
-            name: "StrongContract",
+            name: "StrongContractClient",
             dependencies: [
                 .product(name: "Callable", package: "Callable"),
-                "EncryptDecryptKey"
-            ]
-        ),
-        .target(
-            name: "StrongContractServer",
-            dependencies: [
-                .target(name: "StrongContract"), // ✅ Added StrongContract as a dependency
-                .product(name: "Callable", package: "Callable"),
+                // Conditional dependency on Vapor for the macOS platform only
+                .product(name: "Vapor", package: "vapor", condition: .when(platforms: [.macOS])),
                 "EncryptDecryptKey",
-                .product(name: "Vapor", package: "vapor", condition: .when(platforms: [.macOS, .linux]))
-            ]
-        ),
+            ]),
         .testTarget(
-            name: "StrongContractTests",
-            dependencies: ["StrongContract"]
-        ),
+            name: "StrongContractClientTests",
+            dependencies: ["StrongContractClient"]),
     ]
 )

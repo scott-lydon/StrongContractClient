@@ -9,7 +9,6 @@
 import EncryptDecryptKey
 import Vapor
 import Callable
-import StrongContract
 
 extension Vapor.Request {
     

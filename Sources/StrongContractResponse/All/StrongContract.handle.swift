@@ -7,9 +7,8 @@
 
 #if canImport(Vapor)
 import Vapor
-import StrongContract
 
-public extension StrongContract.Request {
+public extension StrongContractClient.Request {
 
     typealias PayloadToResponse = (Payload, Vapor.Request) async throws -> ResponseAdaptor
 
@@ -72,7 +71,7 @@ public extension StrongContract.Request {
     }
 }
 
-public extension StrongContract.Request where Response == Data {
+public extension StrongContractClient.Request where Response == Data {
 
     // We need to break the contract in order to return a byte stream `streamFile(at: )`
     // Thats why we return a Vapor.Response here
