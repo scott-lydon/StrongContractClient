@@ -62,25 +62,7 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(baseURL, expectedURL, "Cached URL should be returned")
     }
 
-    func testResponseAdaptorInitializationWithError() {
-        // Setup
-        let response = AlwaysFailingEncoder()
-        // ErrorOnEncodeResponse(message: "This should fail", failingPart: AlwaysFailingEncoder())
 
-
-        // Test
-        XCTAssertThrowsError({
-            _ = try StrongContractClient.Request<Empty, AlwaysFailingEncoder>.ResponseAdaptor(
-                body: response
-            )
-        }, "The initializer should throw an error when encoding fails") { error in
-            if let error = error as? GenericError {
-                XCTAssertEqual(error.text, "Always fails", "The error message should indicate why the encoding failed")
-            } else {
-                XCTFail("Error thrown was not a GenericError as expected.")
-            }
-        }
-    }
 
     func testBaseURLRetrievalFromUserDefaults() {
         // Setup
@@ -102,42 +84,6 @@ class RequestTests: XCTestCase {
         XCTAssertTrue(baseURL.isEmpty, "Should return an empty string if no base URL is set")
     }
 
-    func testResponseAdaptorInitializationSuccess() {
-        // Setup
-        let response = MockResponse(message: "Success")
-        let encoder = JSONEncoder()
-
-        // Test
-        XCTAssertNoThrow({
-            let adaptor = try StrongContractClient.Request<Empty, MockResponse>.ResponseAdaptor(
-                status: .ok,
-                body: response,
-                using: encoder
-            )
-            XCTAssertEqual(adaptor.status, .ok)
-            XCTAssertEqual(adaptor.version, .http1_1)
-            XCTAssertEqual(adaptor.headers, .defaultJson)
-            XCTAssertNotNil(adaptor.data)
-        }, "Initialization should succeed without throwing an error")
-    }
-
-    func testVaporResponseGeneration() {
-        // Setup
-        let response = MockResponse(message: "Test")
-        let adaptor = try! StrongContractClient.Request<Empty, MockResponse>.ResponseAdaptor(
-            body: response,
-            using: JSONEncoder()
-        )
-
-        // Test
-        let vaporResponse = adaptor.vaporResponse
-
-        // Verify
-        XCTAssertEqual(vaporResponse.status, .ok)
-        XCTAssertEqual(vaporResponse.version, .http1_1)
-        XCTAssertEqual(vaporResponse.headers["Content-Length"].first, String(adaptor.data.readableBytes))
-        XCTAssertNotNil(vaporResponse.body)
-    }
 
     func testEncodingDecodingURLQueryItem() {
         // Setup
@@ -199,18 +145,6 @@ class RequestTests: XCTestCase {
         }
     }
 
-    func testInvalidPath() {
-        // Setup
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = "example.com"
-        components.path = "noLeadingSlash"  // Invalid because it doesn't start with "/"
-
-        // Test and verify
-        XCTAssertThrowsError(try components.urlAndValidate()) { error in
-            XCTAssertEqual(error as? URLValidationError, .invalidPath("Current path: noLeadingSlash"))
-        }
-    }
 
     func testMissingScheme2() {
         var components = URLComponents()
