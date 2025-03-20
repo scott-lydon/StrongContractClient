@@ -128,8 +128,13 @@ public struct Request<Payload: Codable, Response: Codable> {
         // Create the URLRequest and set its properties
         var request = URLRequest(url: url)
         if let payload {
-            request.httpBody = Payload.self == Empty.self ? nil : try encoder.encode(payload)
-        }
+            if Payload.self == Data.self {
+                request.httpBody = payload as? Data
+            } else if Payload.self == Empty.self {
+                request.httpBody = nil
+            } else {
+                request.httpBody = try encoder.encode(payload)
+            }        }
         request.httpMethod = method.rawValue
         if request.httpMethod == HTTPMethod.get.rawValue {
             assert(request.httpBody == nil, "URL Request session will throw an error if the method is get and body is not nil")
