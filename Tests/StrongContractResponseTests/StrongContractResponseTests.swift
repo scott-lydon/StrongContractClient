@@ -2,6 +2,11 @@ import XCTest
 import Callable
 @testable import StrongContractClient
 
+#if canImport(FoundationNetworking)
+// Provided for `URL` related objects on Linux platforms. 
+import FoundationNetworking
+#endif
+
 
 struct MockResponse: Codable {
     var message: String
