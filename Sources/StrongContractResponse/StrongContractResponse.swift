@@ -4,6 +4,11 @@
 import Foundation
 import Callable
 
+#if canImport(FoundationNetworking)
+// Provided for `URL` related objects on Linux platforms.
+import FoundationNetworking
+#endif
+
 public var defaultComponents: URLComponents = .init()
 public var defaultPath: String = ""
 public var defaultContentType: String = "application/json"

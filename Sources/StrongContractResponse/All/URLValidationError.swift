@@ -6,6 +6,10 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+// Provided for `URL` related objects on Linux platforms. 
+import FoundationNetworking
+#endif
 
 enum URLValidationError: Error, LocalizedError, Equatable {
     case missingScheme(String)
