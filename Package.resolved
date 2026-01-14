@@ -1,13 +1,13 @@
 {
-  "originHash" : "a0e46574b5da25b89cda43efbd9dbb8169976c9ff363049038e937a483de091f",
+  "originHash" : "867105a3703dafc325faf715f9a8784defb61f22236d706fc685d86c0a7d90f5",
   "pins" : [
     {
       "identity" : "callable",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ElevatedUnderdogs/Callable.git",
       "state" : {
-        "revision" : "5e6de476a268e5858b78eed17d51162eccaf4203",
-        "version" : "3.0.1"
+        "revision" : "70ecc6bcdfe09ab8ca50b800acb401842222732f",
+        "version" : "3.0.2"
       }
     },
     {

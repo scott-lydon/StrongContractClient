@@ -131,28 +131,8 @@ public struct Request<Payload: Codable, Response: Codable> {
         // Attempt to validate the URL and create the URLRequest
         let url = try components.urlAndValidate()
         // Create the URLRequest and set its properties
-        var request = URLRequest(url: url)
-        if let payload {
-            if Payload.self == Data.self {
-                request.httpBody = payload as? Data
-            } else if Payload.self == Empty.self {
-                request.httpBody = nil
-            } else {
-                request.httpBody = try encoder.encode(payload)
-            }        }
-        request.httpMethod = method.rawValue
-        if request.httpMethod == HTTPMethod.get.rawValue {
-            assert(request.httpBody == nil, "URL Request session will throw an error if the method is get and body is not nil")
-            request.httpBody = nil
-        }
 
-        if let token {
-            request.setValue( "Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
-        request.addValue(contentType, forHTTPHeaderField: "Content-Type")
-        // ... Set other properties on the request as needed ...
-
-        return request
+        return try URLRequest.commonURLRequest(url: url, payload: payload, method: method, contentType: contentType)
     }
 
     /// This is the client side half of the strong contract between the client and the api
