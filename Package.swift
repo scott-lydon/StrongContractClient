@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         // Existing dependencies
-        .package(url: "https://github.com/ElevatedUnderdogs/Callable.git", .upToNextMajor(from: "3.0.1")),
+        .package(url: "https://github.com/ElevatedUnderdogs/Callable.git", .upToNextMajor(from: "3.0.2")),
         .package(url: "https://github.com/scott-lydon/EncryptDecryptKey.git", from: "1.1.2")
     ],
     targets: [
